@@ -1,1 +1,210 @@
-<iframe width="560" height="315" src="https://www.youtube.com/embed/R1JBQMXbN2k?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Lato:700" rel="stylesheet">
+  <style>
+  html {
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+  }
+  body {
+    overflow: hidden;
+  }
+  img {
+    max-width: 100%;
+  }
+  * { box-sizing: border-box; }
+  .video-background {
+    background: #000;
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -99;
+  }
+  .video-foreground,
+  .video-background iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  #vidtop-content {
+  	top: 0;
+  	color: #fff;
+  }
+  @media (min-aspect-ratio: 16/9) {
+    .video-foreground { height: 300%; top: -100%; }
+  }
+  @media (max-aspect-ratio: 16/9) {
+    .video-foreground { width: 300%; left: -100%; }
+  }
+  .title {
+    position: absolute;
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    height: 50%;
+    margin: 0 0 0 50px;
+    z-index: 2;
+  }
+  .overlay {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.25);
+    opacity: 1;
+  }
+  .online {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 0;
+  }
+  .face {
+    border: 4px solid white;
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    margin: 20px;
+  }
+  .text-container {
+    position: absolute;
+    left: -240px;
+    width: 230px;
+  }
+  .arrow_box {
+  	background: #fff;
+  	border: 4px solid #fff;
+    padding: 10px;
+
+  }
+  .arrow_box:after, .arrow_box:before {
+  	left: 100%;
+  	top: 50%;
+  	border: solid transparent;
+  	content: " ";
+  	height: 0;
+  	width: 0;
+  	position: absolute;
+  	pointer-events: none;
+  }
+
+  .arrow_box:after {
+  	border-color: rgba(255, 255, 255, 0);
+  	border-left-color: #fff;
+  	border-width: 10px;
+  	margin-top: -10px;
+  }
+  .arrow_box:before {
+  	border-color: rgba(0, 0, 0, 0);
+  	border-left-color: #;
+  	border-width: 16px;
+  	margin-top: -16px;
+  }
+  @keyframes slideInUp {
+  from {
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+.slideInUp {
+  -webkit-animation-name: slideInUp;
+  animation-name: slideInUp;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+  </style>
+</head>
+<body>
+  <div class="title">
+    <h1>Arnold Schwarzenegger</h1>
+  </div>
+  <div class="online">
+    <div class="chat slideInUp">
+      <div class="text-container">
+        <div class="text arrow_box">I really love Arnold!</div>
+      </div>
+      <div class="face">
+        <img src="faces/1.jpg">
+      </div>
+    </div>
+    <div class="chat slideInUp" style="animation-delay: 2s;">
+      <div class="text-container">
+        <div class="text arrow_box">Arnold is my inspiration!</div>
+      </div>
+      <div class="face">
+        <img src="faces/2.jpg">
+      </div>
+    </div>
+    <div class="chat slideInUp" style="animation-delay: 5s;">
+      <div class="text-container">
+        <div class="text arrow_box">I want to be like arnold!</div>
+      </div>
+      <div class="face">
+        <img src="faces/3.jpg">
+      </div>
+    </div>
+    <div class="chat slideInUp"  style="animation-delay: 10s;">
+      <div class="text-container">
+        <div class="text arrow_box">Never give up or be afraid of failure!</div>
+      </div>
+      <div class="face">
+        <img src="faces/4.jpg">
+      </div>
+    </div>
+  </div>
+  <div class="overlay"></div>
+  <div class="video-background">
+    <div class="video-foreground">
+      <div id="ytplayer"></div>
+    </div>
+  </div>
+<script>
+  // Load the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/player_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // Replace the 'ytplayer' element with an <iframe> and
+  // YouTube player after the API code downloads.
+  var player;
+  var movies = [
+    'R1JBQMXbN2k',
+    'vH0nP4NzS9M',
+    '4bJB5DCVYyY'
+  ]
+  function onYouTubePlayerAPIReady() {
+    player = new YT.Player('ytplayer', {
+      videoId: movies[Math.floor(Math.random() * movies.length)],
+      playerVars: {
+        'autoplay': 1, 'controls': 0, 'showinfo': 0,
+        playsinline: 1,
+      loop: 1,
+    },
+    events:  {
+      onStateChange: onStateChange
+    }
+    });
+  }
+  function onStateChange(data) {
+    if(data.data === 0) {
+      location.reload()
+    }
+  }
+</script>
+</body>
+</html>
